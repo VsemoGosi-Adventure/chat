@@ -13,7 +13,9 @@ const (
 	UserIDKey contextKey = "user_id"
 )
 
-func AuthMiddleware(next http.Handler) http.Handler {
+// UserContextMiddleware extracts X-User-ID header (injected by Traefik after authentication)
+// and adds it to the request context. Returns 401 if the header is missing or invalid.
+func UserContextMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userIDHeader := r.Header.Get("X-User-ID")
 		if userIDHeader == "" {
