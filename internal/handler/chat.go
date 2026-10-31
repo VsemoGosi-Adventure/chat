@@ -26,17 +26,32 @@ type GetMessagesResponse struct {
 }
 
 type MessageDTO struct {
-	ID             uuid.UUID  `json:"id"`
-	ChatID         uuid.UUID  `json:"chat_id"`
-	UserID         uuid.UUID  `json:"user_id"`
-	SenderUsername string     `json:"sender_username"`
-	ReplyToID      *uuid.UUID `json:"reply_to_id,omitempty"`
-	Type           string     `json:"type"`
-	Body           string     `json:"body"`
-	CreatedAt      time.Time  `json:"created_at"`
-	EditedAt       *time.Time `json:"edited_at,omitempty"`
+	ID             uuid.UUID  `json:"id" example:"550e8400-e29b-41d4-a716-446655440000"`
+	ChatID         uuid.UUID  `json:"chat_id" example:"550e8400-e29b-41d4-a716-446655440001"`
+	UserID         uuid.UUID  `json:"user_id" example:"550e8400-e29b-41d4-a716-446655440002"`
+	SenderUsername string     `json:"sender_username" example:"john_doe"`
+	ReplyToID      *uuid.UUID `json:"reply_to_id,omitempty" example:"550e8400-e29b-41d4-a716-446655440003"`
+	Type           string     `json:"type" example:"text" enums:"text,system"`
+	Body           string     `json:"body" example:"Hello, world!"`
+	CreatedAt      time.Time  `json:"created_at" example:"2026-10-31T12:00:00Z"`
+	EditedAt       *time.Time `json:"edited_at,omitempty" example:"2026-10-31T12:05:00Z"`
 }
 
+// GetMessages godoc
+// @Summary      Get chat messages
+// @Description  Retrieve paginated message history for a specific event chat using cursor-based pagination
+// @Tags         messages
+// @Accept       json
+// @Produce      json
+// @Param        event_id  path      string  true  "Event ID (UUID)"
+// @Param        cursor    query     string  false "Cursor for pagination (RFC3339 timestamp)"
+// @Param        limit     query     int     false "Number of messages to return (max 100)" default(50)
+// @Success      200  {object}  GetMessagesResponse
+// @Failure      400  {string}  string "Bad Request"
+// @Failure      401  {string}  string "Unauthorized"
+// @Failure      500  {string}  string "Internal Server Error"
+// @Security     ApiKeyAuth
+// @Router       /chats/{event_id}/messages [get]
 func (h *ChatHandler) GetMessages(w http.ResponseWriter, r *http.Request) {
 	eventIDStr := r.PathValue("event_id")
 	if eventIDStr == "" {

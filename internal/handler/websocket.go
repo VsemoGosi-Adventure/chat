@@ -27,6 +27,19 @@ func NewWebSocketHandler(hub *ws.Hub, chatService *service.ChatService, wsCfg co
 	}
 }
 
+// HandleWebSocket godoc
+// @Summary      WebSocket connection for real-time chat
+// @Description  Upgrade HTTP connection to WebSocket for real-time bidirectional messaging within an event chat
+// @Tags         websocket
+// @Accept       json
+// @Produce      json
+// @Param        event_id  path  string  true  "Event ID (UUID)"
+// @Success      101  {string}  string "Switching Protocols"
+// @Failure      400  {string}  string "Bad Request"
+// @Failure      401  {string}  string "Unauthorized"
+// @Failure      500  {string}  string "Internal Server Error"
+// @Security     ApiKeyAuth
+// @Router       /chats/{event_id}/ws [get]
 func (h *WebSocketHandler) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	eventIDStr := r.PathValue("event_id")
 	if eventIDStr == "" {

@@ -16,7 +16,29 @@ import (
 	"github.com/VsemoGosi-Adventure/chat/internal/service"
 	"github.com/VsemoGosi-Adventure/chat/internal/websocket"
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	_ "github.com/VsemoGosi-Adventure/chat/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
+
+// @title           Chat Service API
+// @version         1.0
+// @description     Real-time chat service for event participants with WebSocket support
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.email  support@adventure.com
+
+// @license.name  MIT
+// @license.url   https://opensource.org/licenses/MIT
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name X-User-ID
+// @description User ID passed from API Gateway (Traefik) after authentication
 
 func main() {
 	if err := run(); err != nil {
@@ -75,6 +97,8 @@ func run() error {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})
+
+	mux.Handle("GET /swagger/", httpSwagger.WrapHandler)
 
 	srv := &http.Server{
 		Addr:         ":" + cfg.Server.Port,
