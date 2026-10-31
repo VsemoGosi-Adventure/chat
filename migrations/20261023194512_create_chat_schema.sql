@@ -26,4 +26,7 @@ CREATE TABLE IF NOT EXISTS chat.messages (
 CREATE INDEX IF NOT EXISTS idx_messages_chat_created ON chat.messages (chat_id, created_at DESC);
 
 -- +goose Down
-SELECT 'down SQL query';
+DROP INDEX IF EXISTS chat.idx_messages_chat_created;
+DROP TABLE IF EXISTS chat.messages;
+DROP TABLE IF EXISTS chat.event_chats;
+DROP SCHEMA IF EXISTS chat CASCADE;
