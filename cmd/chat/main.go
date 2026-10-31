@@ -90,8 +90,8 @@ func run() error {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /api/v1/chats/{event_id}/messages", middleware.AuthMiddleware(http.HandlerFunc(chatHandler.GetMessages)))
-	mux.Handle("GET /api/v1/chats/{event_id}/ws", middleware.AuthMiddleware(http.HandlerFunc(wsHandler.HandleWebSocket)))
+	mux.Handle("GET /api/v1/chats/{event_id}/messages", middleware.UserContextMiddleware(http.HandlerFunc(chatHandler.GetMessages)))
+	mux.Handle("GET /api/v1/chats/{event_id}/ws", middleware.UserContextMiddleware(http.HandlerFunc(wsHandler.HandleWebSocket)))
 
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)

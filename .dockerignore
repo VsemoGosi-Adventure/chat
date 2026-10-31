@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Build artifacts
+bin/
+*.exe
+*.test
+*.out
+
+# Documentation
+README.md
+AGENTS.md
+docs/swagger.json
+docs/swagger.yaml
+
+# CI/CD
+.github
+
+# Development
+.env
+.env.local
+
+# Claude
+.claude
+
+# Go
+vendor/
